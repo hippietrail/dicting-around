@@ -92,7 +92,7 @@ function switchTab(tabName) {
     // Special debugging for Oxford Learners
     if (tabName === 'oxford-learners') {
         console.log(`🎯 Oxford Learners tab activated`);
-        const oxfordContent = document.getElementById('content-oxford-learners');
+        const oxfordContent = document.getElementById('content-oxford-learner-s');
         if (oxfordContent) {
             console.log(`✅ Oxford Learners content div found:`, oxfordContent);
             console.log(`📋 Oxford Learners content visible:`, oxfordContent.style.display);
