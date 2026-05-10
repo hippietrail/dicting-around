@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dictionary Lookup</title>
+    <style>
+        body {
+            font-family: monospace;
+            background-color: #f0f0f0;
+            color: #333;
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            overflow: hidden;
+        }
+        
+        #search-container {
+            display: flex;
+            align-items: center;
+            padding: 0 20px;
+            gap: 10px;
+            height: 60px;
+            background: white;
+            border-bottom: 1px solid #ccc;
+        }
+        
+        #word-input {
+            flex-grow: 1;
+            height: 40px;
+            line-height: 40px;
+            font-size: 16px;
+            padding: 0 15px;
+            border: 1px solid #ccc;
+        }
+        
+        #search-btn {
+            height: 40px;
+            line-height: 40px;
+            font-size: 16px;
+            background-color: #e0e0e0;
+            color: black;
+            border: 1px solid #ccc;
+            padding: 0 15px;
+            cursor: pointer;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            transition: background-color 0.3s;
+        }
+        
+        #search-btn:hover {
+            background-color: #d0d0d0;
+        }
+        
+        #tabs-container {
+            display: flex;
+            background: white;
+            border-bottom: 1px solid #ccc;
+            padding: 0 20px;
+        }
+        
+        .tab-btn {
+            padding: 15px 20px;
+            background: #f8f8f8;
+            border: none;
+            border-bottom: 2px solid transparent;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s;
+        }
+        
+        .tab-btn:hover {
+            background: #e8e8e8;
+        }
+        
+        .tab-btn.active {
+            background: white;
+            border-bottom-color: #4CAF50;
+            font-weight: bold;
+        }
+        
+        #content-area {
+            height: calc(100vh - 120px);
+            overflow: hidden;
+        }
+        
+        .tab-content {
+            display: none;
+            height: 100%;
+            overflow-y: auto;
+            padding: 20px;
+            background: white;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        .debug-section {
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            background: white;
+        }
+        
+        .debug-header {
+            background: #f8f8f8;
+            padding: 10px 15px;
+            border-bottom: 1px solid #ccc;
+            font-weight: bold;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .debug-content-item {
+            padding: 15px;
+            min-height: 100px;
+        }
+        
+        .test-result {
+            padding: 10px;
+            border-radius: 4px;
+            margin: 5px 0;
+        }
+        
+        .test-result.success {
+            background: #e8f5e8;
+            border: 1px solid #4caf50;
+        }
+        
+        .test-result.blocked {
+            background: #ffebee;
+            border: 1px solid #f44336;
+        }
+        
+        .test-result.error {
+            background: #fff3e0;
+            border: 1px solid #ff9800;
+        }
+        
+        .status {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        
+        .url {
+            font-size: 12px;
+            color: #666;
+            word-break: break-all;
+            margin-bottom: 5px;
+        }
+        
+        .header {
+            font-size: 11px;
+            color: #888;
+            margin: 2px 0;
+        }
+        
+        .error-msg {
+            color: #d32f2f;
+            font-size: 12px;
+        }
+        
+        .view-btn {
+            padding: 5px 10px;
+            background: #e0e0e0;
+            border: 1px solid #ccc;
+            cursor: pointer;
+            font-size: 12px;
+            margin-left: 5px;
+        }
+        
+        .view-btn:hover {
+            background: #d0d0d0;
+        }
+        
+        .loading {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            color: #666;
+        }
+        
+        .error {
+            color: #d32f2f;
+            padding: 20px;
+            text-align: center;
+        }
+        
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        
+        .spinner {
+            width: 20px;
+            height: 20px;
+            border: 2px solid #e0e0e0;
+            border-top: 2px solid #666;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-right: 10px;
+        }
+        
+        .dictionary-iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+        
+        .dictionary-view {
+            height: calc(100vh - 140px);
+            background: white;
+            border: 1px solid #ccc;
+            margin: 20px;
+        }
+        
+        .dictionary-header {
+            background: #f8f8f8;
+            padding: 10px 15px;
+            border-bottom: 1px solid #ccc;
+            font-weight: bold;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .favicon {
+            width: 16px;
+            height: 16px;
+            margin-right: 8px;
+            vertical-align: middle;
+        }
+        
+        .dictionary-content {
+            height: calc(100% - 50px);
+            position: relative;
+        }
+    </style>
+</head>
+<body>
+    <div id="search-container">
+        <input type="text" id="word-input" placeholder="Enter word to look up...">
+        <button id="search-btn" onclick="lookupWord()">Search</button>
+    </div>
+    
+    <div id="tabs-container">
+        <button class="tab-btn active" data-tab="debug">Debug</button>
+        <button class="tab-btn" data-tab="american-heritage">American Heritage</button>
+        <button class="tab-btn" data-tab="britannica">Britannica</button>
+        <button class="tab-btn" data-tab="cambridge">Cambridge</button>
+        <button class="tab-btn" data-tab="chambers">Chambers</button>
+        <button class="tab-btn" data-tab="collins">Collins</button>
+        <button class="tab-btn" data-tab="longman">Longman</button>
+        <button class="tab-btn" data-tab="merriam-webster">Merriam-Webster</button>
+        <button class="tab-btn" data-tab="oed">OED</button>
+        <button class="tab-btn" data-tab="oxford-learners">Oxford Learner's</button>
+    </div>
+    
+    <div id="content-area">
+        <div id="tab-debug" class="tab-content active">
+            <div id="debug-content">
+                <div style="text-align: center; color: #666; padding: 40px;">
+                    Enter a word above to test all dictionaries and see which ones work
+                </div>
+            </div>
+        </div>
+        
+        <div id="tab-american-heritage" class="tab-content">
+            <div class="dictionary-view">
+                <div class="dictionary-header">
+                    <span><img src="favicons/american-heritage.ico" class="favicon"> American Heritage</span>
+                    <div>
+                        <button class="view-btn" onclick="loadDictionary('American Heritage', currentWord)" style="background: #66BB6A;">Iframe</button>
+                        <button class="view-btn" onclick="fetchDictionaryFallback('American Heritage', currentWord)" style="background: #8D6E63;">Fetch</button>
+                        <button class="view-btn" onclick="openInNewTab('American Heritage', currentWord)" style="background: #2196f3;">New Tab</button>
+                    </div>
+                </div>
+                <div class="dictionary-content" id="content-american-heritage">
+                    <div class="loading">Ready</div>
+                </div>
+            </div>
+        </div>
+        
+        <div id="tab-britannica" class="tab-content">
+            <div class="dictionary-view">
+                <div class="dictionary-header">
+                    <span><img src="favicons/britannica.ico" class="favicon"> Britannica</span>
+                    <div>
+                        <button class="view-btn" onclick="loadDictionary('Britannica', currentWord)" style="background: #81C784;">Iframe</button>
+                        <button class="view-btn" onclick="fetchDictionaryFallback('Britannica', currentWord)" style="background: #A1887F;">Fetch</button>
+                        <button class="view-btn" onclick="openInNewTab('Britannica', currentWord)" style="background: #2196f3;">New Tab</button>
+                    </div>
+                </div>
+                <div class="dictionary-content" id="content-britannica">
+                    <div class="loading">Ready</div>
+                </div>
+            </div>
+        </div>
+        
+        <div id="tab-cambridge" class="tab-content">
+            <div class="dictionary-view">
+                <div class="dictionary-header">
+                    <span><img src="favicons/cambridge.ico" class="favicon"> Cambridge</span>
+                    <div>
+                        <button class="view-btn" onclick="loadDictionary('Cambridge', currentWord)" style="background: #9E9A9A;">Iframe</button>
+                        <button class="view-btn" onclick="fetchDictionaryFallback('Cambridge', currentWord)" style="background: #795548;">Fetch</button>
+                        <button class="view-btn" onclick="openInNewTab('Cambridge', currentWord)" style="background: #2196f3;">New Tab</button>
+                    </div>
+                </div>
+                <div class="dictionary-content" id="content-cambridge">
+                    <div class="loading">Ready</div>
+                </div>
+            </div>
+        </div>
+        
+        <div id="tab-chambers" class="tab-content">
+            <div class="dictionary-view">
+                <div class="dictionary-header">
+                    <span><img src="favicons/chambers.png" class="favicon"> Chambers</span>
+                    <div>
+                        <button class="view-btn" onclick="loadDictionary('Chambers', currentWord)" style="background: #4FC3F7;">Iframe</button>
+                        <button class="view-btn" onclick="fetchDictionaryFallback('Chambers', currentWord)" style="background: #BDBDBD;">Fetch</button>
+                        <button class="view-btn" onclick="openInNewTab('Chambers', currentWord)" style="background: #2196f3;">New Tab</button>
+                    </div>
+                </div>
+                <div class="dictionary-content" id="content-chambers">
+                    <div class="loading">Ready</div>
+                </div>
+            </div>
+        </div>
+        
+        <div id="tab-collins" class="tab-content">
+            <div class="dictionary-view">
+                <div class="dictionary-header">
+                    <span><img src="favicons/collins.ico" class="favicon"> Collins</span>
+                    <div>
+                        <button class="view-btn" onclick="loadDictionary('Collins', currentWord)" style="background: #9E9A9A;">Iframe</button>
+                        <button class="view-btn" onclick="fetchDictionaryFallback('Collins', currentWord)" style="background: #4FC3F7;">Fetch</button>
+                        <button class="view-btn" onclick="openInNewTab('Collins', currentWord)" style="background: #2196f3;">New Tab</button>
+                    </div>
+                </div>
+                <div class="dictionary-content" id="content-collins">
+                    <div class="loading">Ready</div>
+                </div>
+            </div>
+        </div>
+        
+        <div id="tab-longman" class="tab-content">
+            <div class="dictionary-view">
+                <div class="dictionary-header">
+                    <span><img src="favicons/longman.ico" class="favicon"> Longman</span>
+                    <div>
+                        <button class="view-btn" onclick="loadDictionary('Longman', currentWord)" style="background: #9E9A9A;">Iframe</button>
+                        <button class="view-btn" onclick="fetchDictionaryFallback('Longman', currentWord)" style="background: #4FC3F7;">Fetch</button>
+                        <button class="view-btn" onclick="openInNewTab('Longman', currentWord)" style="background: #2196f3;">New Tab</button>
+                    </div>
+                </div>
+                <div class="dictionary-content" id="content-longman">
+                    <div class="loading">Ready</div>
+                </div>
+            </div>
+        </div>
+        
+        <div id="tab-merriam-webster" class="tab-content">
+            <div class="dictionary-view">
+                <div class="dictionary-header">
+                    <span><img src="favicons/merriam-webster.ico" class="favicon"> Merriam-Webster</span>
+                    <div>
+                        <button class="view-btn" onclick="loadDictionary('Merriam-Webster', currentWord)" style="background: #81C784;">Iframe</button>
+                        <button class="view-btn" onclick="fetchDictionaryFallback('Merriam-Webster', currentWord)" style="background: #A1887F;">Fetch</button>
+                        <button class="view-btn" onclick="openInNewTab('Merriam-Webster', currentWord)" style="background: #2196f3;">New Tab</button>
+                    </div>
+                </div>
+                <div class="dictionary-content" id="content-merriam-webster">
+                    <div class="loading">Ready</div>
+                </div>
+            </div>
+        </div>
+        
+        <div id="tab-oed" class="tab-content">
+            <div class="dictionary-view">
+                <div class="dictionary-header">
+                    <span><img src="favicons/oed.ico" class="favicon"> OED</span>
+                    <div>
+                        <button class="view-btn" onclick="loadDictionary('OED', currentWord)" style="background: #9E9A9A;">Iframe</button>
+                        <button class="view-btn" onclick="fetchDictionaryFallback('OED', currentWord)" style="background: #795548;">Fetch</button>
+                        <button class="view-btn" onclick="openInNewTab('OED', currentWord)" style="background: #2196f3;">New Tab</button>
+                    </div>
+                </div>
+                <div class="dictionary-content" id="content-oed">
+                    <div class="loading">Ready</div>
+                </div>
+            </div>
+        </div>
+        
+        <div id="tab-oxford-learners" class="tab-content">
+            <div class="dictionary-view">
+                <div class="dictionary-header">
+                    <span><img src="favicons/oxford-learners.ico" class="favicon"> Oxford Learner's</span>
+                    <div>
+                        <button class="view-btn" onclick="loadDictionary('Oxford Learners', currentWord)" style="background: #4CAF50;">Iframe</button>
+                        <button class="view-btn" onclick="fetchDictionaryFallback('Oxford Learner\'s', currentWord)" style="background: #ff9800;">Fetch</button>
+                        <button class="view-btn" onclick="openInNewTab('Oxford Learner\'s', currentWord)" style="background: #2196f3;">New Tab</button>
+                    </div>
+                </div>
+                <div class="dictionary-content" id="content-oxford-learners">
+                    <div class="loading">Ready</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div id="tab-chambers" class="tab-content">
+        <div class="dictionary-view">
+            <div class="dictionary-header">
+                <span>🔍 Chambers</span>
+                <div>
+                    <button class="view-btn" onclick="loadDictionary('Chambers', currentWord)">View</button>
+                    <button class="view-btn" onclick="fetchDictionaryFallback('Chambers', currentWord)" style="background: #ff9800;">Fallback</button>
+                    <button class="view-btn" onclick="openInNewTab('Chambers', currentWord)" style="background: #2196f3;">New Tab</button>
+                </div>
+            </div>
+            <div class="dictionary-content" id="content-chambers">
+                <div class="loading">Ready</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="dictionary-fixed.js?v=21"></script>
+</body>
+</html>
