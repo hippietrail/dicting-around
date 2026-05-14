@@ -212,7 +212,7 @@
             height: calc(100vh - 140px);
             background: white;
             border: 1px solid #ccc;
-            margin: 20px;
+            margin: 5px;
         }
         
         .dictionary-header {
@@ -223,6 +223,18 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+            gap: 15px;
+        }
+
+        .dictionary-url {
+            flex-grow: 1;
+            font-family: monospace;
+            font-size: 12px;
+            color: #666;
+            text-align: center;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
         }
         
         .favicon {
@@ -270,6 +282,7 @@
             <div class="dictionary-view">
                 <div class="dictionary-header">
                     <span><img src="favicons/american-heritage.ico" class="favicon"> American Heritage</span>
+                    <div class="dictionary-url" id="url-american-heritage"></div>
                     <div>
                         <button class="view-btn" onclick="loadDictionary('American Heritage', currentWord)" style="background: #66BB6A;">Iframe</button>
                         <button class="view-btn" onclick="fetchDictionaryFallback('American Heritage', currentWord)" style="background: #8D6E63;">Fetch</button>
@@ -286,6 +299,7 @@
             <div class="dictionary-view">
                 <div class="dictionary-header">
                     <span><img src="favicons/britannica.ico" class="favicon"> Britannica</span>
+                    <div class="dictionary-url" id="url-britannica"></div>
                     <div>
                         <button class="view-btn" onclick="loadDictionary('Britannica', currentWord)" style="background: #81C784;">Iframe</button>
                         <button class="view-btn" onclick="fetchDictionaryFallback('Britannica', currentWord)" style="background: #A1887F;">Fetch</button>
@@ -302,6 +316,7 @@
             <div class="dictionary-view">
                 <div class="dictionary-header">
                     <span><img src="favicons/cambridge.ico" class="favicon"> Cambridge</span>
+                    <div class="dictionary-url" id="url-cambridge"></div>
                     <div>
                         <button class="view-btn" onclick="loadDictionary('Cambridge', currentWord)" style="background: #9E9A9A;">Iframe</button>
                         <button class="view-btn" onclick="fetchDictionaryFallback('Cambridge', currentWord)" style="background: #795548;">Fetch</button>
@@ -318,6 +333,7 @@
             <div class="dictionary-view">
                 <div class="dictionary-header">
                     <span><img src="favicons/chambers.png" class="favicon"> Chambers</span>
+                    <div class="dictionary-url" id="url-chambers"></div>
                     <div>
                         <button class="view-btn" onclick="loadDictionary('Chambers', currentWord)" style="background: #4FC3F7;">Iframe</button>
                         <button class="view-btn" onclick="fetchDictionaryFallback('Chambers', currentWord)" style="background: #BDBDBD;">Fetch</button>
@@ -334,6 +350,7 @@
             <div class="dictionary-view">
                 <div class="dictionary-header">
                     <span><img src="favicons/collins.ico" class="favicon"> Collins</span>
+                    <div class="dictionary-url" id="url-collins"></div>
                     <div>
                         <button class="view-btn" onclick="loadDictionary('Collins', currentWord)" style="background: #9E9A9A;">Iframe</button>
                         <button class="view-btn" onclick="fetchDictionaryFallback('Collins', currentWord)" style="background: #4FC3F7;">Fetch</button>
@@ -350,6 +367,7 @@
             <div class="dictionary-view">
                 <div class="dictionary-header">
                     <span><img src="favicons/longman.ico" class="favicon"> Longman</span>
+                    <div class="dictionary-url" id="url-longman"></div>
                     <div>
                         <button class="view-btn" onclick="loadDictionary('Longman', currentWord)" style="background: #9E9A9A;">Iframe</button>
                         <button class="view-btn" onclick="fetchDictionaryFallback('Longman', currentWord)" style="background: #4FC3F7;">Fetch</button>
@@ -366,6 +384,7 @@
             <div class="dictionary-view">
                 <div class="dictionary-header">
                     <span><img src="favicons/merriam-webster.ico" class="favicon"> Merriam-Webster</span>
+                    <div class="dictionary-url" id="url-merriam-webster"></div>
                     <div>
                         <button class="view-btn" onclick="loadDictionary('Merriam-Webster', currentWord)" style="background: #81C784;">Iframe</button>
                         <button class="view-btn" onclick="fetchDictionaryFallback('Merriam-Webster', currentWord)" style="background: #A1887F;">Fetch</button>
@@ -382,6 +401,7 @@
             <div class="dictionary-view">
                 <div class="dictionary-header">
                     <span><img src="favicons/oed.ico" class="favicon"> OED</span>
+                    <div class="dictionary-url" id="url-oed"></div>
                     <div>
                         <button class="view-btn" onclick="loadDictionary('OED', currentWord)" style="background: #9E9A9A;">Iframe</button>
                         <button class="view-btn" onclick="fetchDictionaryFallback('OED', currentWord)" style="background: #795548;">Fetch</button>
@@ -398,6 +418,7 @@
             <div class="dictionary-view">
                 <div class="dictionary-header">
                     <span><img src="favicons/oxford-learners.ico" class="favicon"> Oxford Learner's</span>
+                    <div class="dictionary-url" id="url-oxford-learner-s"></div>
                     <div>
                         <button class="view-btn" onclick="loadDictionary('Oxford Learner\'s', currentWord)" style="background: #4CAF50;">Iframe</button>
                         <button class="view-btn" onclick="fetchDictionaryFallback('Oxford Learner\'s', currentWord)" style="background: #ff9800;">Fetch</button>

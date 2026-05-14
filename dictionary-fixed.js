@@ -37,8 +37,8 @@ const dictionaries = [
     },
     {
         name: 'OED',
-        baseUrl: 'https://www.oed.com/dictionary/',
-        queryParams: { '': '', tl: 'true' }
+        baseUrl: 'https://www.oed.com/search/dictionary/',
+        queryParams: { scope: 'Entries', q: '' }
     },
     {
         name: 'Oxford Learner\'s',
@@ -49,6 +49,10 @@ const dictionaries = [
 
 let currentWord = '';
 let currentTab = 'debug'; // Default to debug tab
+
+function getUrlElementId(dictName) {
+    return `url-${dictName.toLowerCase().replace(/[^a-zA-Z0-9]/g, '-')}`;
+}
 
 // Initialize app
 document.addEventListener('DOMContentLoaded', function() {
@@ -240,13 +244,12 @@ async function testDictionary(dict, word) {
         url = dict.baseUrl + encodeURIComponent(word);
     } else if (dict.queryParams) {
         const params = { ...dict.queryParams };
-        if (dict.queryParams.query !== undefined) {
-            params.query = word;
-        }
-        // Handle OED case with empty key for word
-        if (dict.queryParams[''] !== undefined) {
-            params[''] = word;
-        }
+        // Replace empty string values with the word
+        Object.keys(params).forEach(key => {
+            if (params[key] === '') {
+                params[key] = word;
+            }
+        });
         const queryString = Object.entries(params)
             .map(([key, val]) => {
                 if (key === '') return encodeURIComponent(val);
@@ -358,13 +361,12 @@ async function testDictionaryIframe(dict, word) {
         url = dict.baseUrl + encodeURIComponent(word);
     } else if (dict.queryParams) {
         const params = { ...dict.queryParams };
-        if (dict.queryParams.query !== undefined) {
-            params.query = word;
-        }
-        // Handle OED case with empty key for word
-        if (dict.queryParams[''] !== undefined) {
-            params[''] = word;
-        }
+        // Replace empty string values with the word
+        Object.keys(params).forEach(key => {
+            if (params[key] === '') {
+                params[key] = word;
+            }
+        });
         const queryString = Object.entries(params)
             .map(([key, val]) => {
                 if (key === '') return encodeURIComponent(val);
@@ -426,6 +428,11 @@ function loadDictionary(dictName, word) {
     const dict = dictionaries.find(d => d.name === dictName);
     if (!dict) return;
 
+    if (!word || word.trim() === '') {
+        alert('Please enter a word first');
+        return;
+    }
+
     const contentId = `content-${dictName.toLowerCase().replace(/[^a-zA-Z0-9]/g, '-')}`;
     console.log(`🔍 loadDictionary: dictName="${dictName}", contentId="${contentId}"`);
     
@@ -448,13 +455,12 @@ function loadDictionary(dictName, word) {
         url = dict.baseUrl + encodeURIComponent(word);
     } else if (dict.queryParams) {
         const params = { ...dict.queryParams };
-        if (dict.queryParams.query !== undefined) {
-            params.query = word;
-        }
-        // Handle OED case with empty key for word
-        if (dict.queryParams[''] !== undefined) {
-            params[''] = word;
-        }
+        // Replace empty string values with the word
+        Object.keys(params).forEach(key => {
+            if (params[key] === '') {
+                params[key] = word;
+            }
+        });
         const queryString = Object.entries(params)
             .map(([key, val]) => {
                 if (key === '') return encodeURIComponent(val);
@@ -467,6 +473,13 @@ function loadDictionary(dictName, word) {
     }
 
     console.log(`🚀 Loading ${dictName}: ${url}`);
+    
+    // Update URL display in header
+    const urlElementId = getUrlElementId(dictName);
+    const urlElement = document.getElementById(urlElementId);
+    if (urlElement) {
+        urlElement.textContent = url;
+    }
     
     // Clear any existing content first
     contentDiv.innerHTML = '';
@@ -510,6 +523,11 @@ async function fetchDictionaryFallback(dictName, word) {
     const dict = dictionaries.find(d => d.name === dictName);
     if (!dict) return;
 
+    if (!word || word.trim() === '') {
+        alert('Please enter a word first');
+        return;
+    }
+
     const contentId = `content-${dictName.toLowerCase().replace(/[^a-zA-Z0-9]/g, '-')}`;
     const contentDiv = document.getElementById(contentId);
     
@@ -522,13 +540,12 @@ async function fetchDictionaryFallback(dictName, word) {
         url = dict.baseUrl + encodeURIComponent(word);
     } else if (dict.queryParams) {
         const params = { ...dict.queryParams };
-        if (dict.queryParams.query !== undefined) {
-            params.query = word;
-        }
-        // Handle OED case with empty key for word
-        if (dict.queryParams[''] !== undefined) {
-            params[''] = word;
-        }
+        // Replace empty string values with the word
+        Object.keys(params).forEach(key => {
+            if (params[key] === '') {
+                params[key] = word;
+            }
+        });
         const queryString = Object.entries(params)
             .map(([key, val]) => {
                 if (key === '') return encodeURIComponent(val);
@@ -538,6 +555,13 @@ async function fetchDictionaryFallback(dictName, word) {
         url = dict.baseUrl + '?' + queryString;
     } else {
         url = dict.baseUrl + '?' + dict.queryParam + '=' + encodeURIComponent(word);
+    }
+
+    // Update URL display in header
+    const urlElementId = getUrlElementId(dictName);
+    const urlElement = document.getElementById(urlElementId);
+    if (urlElement) {
+        urlElement.textContent = url;
     }
 
     try {
@@ -584,18 +608,22 @@ function openInNewTab(dictName, word) {
     const dict = dictionaries.find(d => d.name === dictName);
     if (!dict) return;
 
+    if (!word || word.trim() === '') {
+        alert('Please enter a word first');
+        return;
+    }
+
     let url;
     if (dict.noQuery) {
         url = dict.baseUrl + encodeURIComponent(word);
     } else if (dict.queryParams) {
         const params = { ...dict.queryParams };
-        if (dict.queryParams.query !== undefined) {
-            params.query = word;
-        }
-        // Handle OED case with empty key for word
-        if (dict.queryParams[''] !== undefined) {
-            params[''] = word;
-        }
+        // Replace empty string values with the word
+        Object.keys(params).forEach(key => {
+            if (params[key] === '') {
+                params[key] = word;
+            }
+        });
         const queryString = Object.entries(params)
             .map(([key, val]) => {
                 if (key === '') return encodeURIComponent(val);
@@ -605,6 +633,13 @@ function openInNewTab(dictName, word) {
         url = dict.baseUrl + '?' + queryString;
     } else {
         url = dict.baseUrl + '?' + dict.queryParam + '=' + encodeURIComponent(word);
+    }
+
+    // Update URL display in header
+    const urlElementId = getUrlElementId(dictName);
+    const urlElement = document.getElementById(urlElementId);
+    if (urlElement) {
+        urlElement.textContent = url;
     }
 
     window.open(url, '_blank');
