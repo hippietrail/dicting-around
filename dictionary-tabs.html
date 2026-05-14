@@ -248,6 +248,46 @@
             height: calc(100% - 50px);
             position: relative;
         }
+
+        .dict-name {
+            font-family: 'Comic Sans MS', 'Noteworthy', cursive;
+        }
+
+        .dict-name-american-heritage {
+            font-family: 'Minion New', times, clean, serif;
+        }
+
+        .dict-name-britannica {
+            font-family: Georgia, Arial, Verdana, sans-serif;
+        }
+
+        .dict-name-cambridge {
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        .dict-name-chambers {
+            font-family: 'Lucida Grande', 'Lucida Sans Unicode', 'Lucida Sans', Geneva, Verdana, sans-serif;
+        }
+
+        .dict-name-collins {
+            font-family: 'Collins Fedra', 'Fedra Display', 'PMN Caecilia', 'Adelle', 'Roboto Slab', 'Arvo', 'Rockwell', Courier, serif;
+        }
+
+        .dict-name-longman {
+            font-family: "Futura-Bold", "Arial Black", "Impact", "Helvetica Neue", Arial, sans-serif;
+        }
+
+        .dict-name-merriam-webster {
+            font-family: Swift, 'Bitstream Charter', 'Charter', 'Georgia Pro', 'Georgia', 'Times New Roman', serif;
+        }
+
+        .dict-name-oed {
+            font-family: 'Source Sans 3', 'Source Sans Pro', 'Myriad Pro', 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+        }
+
+        .dict-name-oxford-learners {
+            font-family: 'Calibri', 'Candara', 'Segoe UI', 'Source Sans 3', 'BlinkMacSystemFont', -apple-system, Arial, sans-serif;
+        }
     </style>
 </head>
 <body>
@@ -281,7 +321,7 @@
         <div id="tab-american-heritage" class="tab-content">
             <div class="dictionary-view">
                 <div class="dictionary-header">
-                    <span><img src="favicons/american-heritage.ico" class="favicon"> American Heritage</span>
+                    <span><img src="favicons/american-heritage.ico" class="favicon"> <span class="dict-name dict-name-american-heritage">American Heritage</span></span>
                     <div class="dictionary-url" id="url-american-heritage"></div>
                     <div>
                         <button class="view-btn" onclick="loadDictionary('American Heritage', currentWord)" style="background: #66BB6A;">Iframe</button>
@@ -298,7 +338,7 @@
         <div id="tab-britannica" class="tab-content">
             <div class="dictionary-view">
                 <div class="dictionary-header">
-                    <span><img src="favicons/britannica.ico" class="favicon"> Britannica</span>
+                    <span><img src="favicons/britannica.ico" class="favicon"> <span class="dict-name dict-name-britannica">Britannica</span></span>
                     <div class="dictionary-url" id="url-britannica"></div>
                     <div>
                         <button class="view-btn" onclick="loadDictionary('Britannica', currentWord)" style="background: #81C784;">Iframe</button>
@@ -315,7 +355,7 @@
         <div id="tab-cambridge" class="tab-content">
             <div class="dictionary-view">
                 <div class="dictionary-header">
-                    <span><img src="favicons/cambridge.ico" class="favicon"> Cambridge</span>
+                    <span><img src="favicons/cambridge.ico" class="favicon"> <span class="dict-name dict-name-cambridge">Cambridge</span></span>
                     <div class="dictionary-url" id="url-cambridge"></div>
                     <div>
                         <button class="view-btn" onclick="loadDictionary('Cambridge', currentWord)" style="background: #9E9A9A;">Iframe</button>
@@ -332,7 +372,7 @@
         <div id="tab-chambers" class="tab-content">
             <div class="dictionary-view">
                 <div class="dictionary-header">
-                    <span><img src="favicons/chambers.png" class="favicon"> Chambers</span>
+                    <span><img src="favicons/chambers.png" class="favicon"> <span class="dict-name dict-name-chambers">Chambers</span></span>
                     <div class="dictionary-url" id="url-chambers"></div>
                     <div>
                         <button class="view-btn" onclick="loadDictionary('Chambers', currentWord)" style="background: #4FC3F7;">Iframe</button>
@@ -349,7 +389,7 @@
         <div id="tab-collins" class="tab-content">
             <div class="dictionary-view">
                 <div class="dictionary-header">
-                    <span><img src="favicons/collins.ico" class="favicon"> Collins</span>
+                    <span><img src="favicons/collins.ico" class="favicon"> <span class="dict-name dict-name-collins">Collins</span></span>
                     <div class="dictionary-url" id="url-collins"></div>
                     <div>
                         <button class="view-btn" onclick="loadDictionary('Collins', currentWord)" style="background: #9E9A9A;">Iframe</button>
@@ -366,7 +406,7 @@
         <div id="tab-longman" class="tab-content">
             <div class="dictionary-view">
                 <div class="dictionary-header">
-                    <span><img src="favicons/longman.ico" class="favicon"> Longman</span>
+                    <span><img src="favicons/longman.ico" class="favicon"> <span class="dict-name dict-name-longman">Longman</span></span>
                     <div class="dictionary-url" id="url-longman"></div>
                     <div>
                         <button class="view-btn" onclick="loadDictionary('Longman', currentWord)" style="background: #9E9A9A;">Iframe</button>
@@ -383,7 +423,7 @@
         <div id="tab-merriam-webster" class="tab-content">
             <div class="dictionary-view">
                 <div class="dictionary-header">
-                    <span><img src="favicons/merriam-webster.ico" class="favicon"> Merriam-Webster</span>
+                    <span><img src="favicons/merriam-webster.ico" class="favicon"> <span class="dict-name dict-name-merriam-webster">Merriam-Webster</span></span>
                     <div class="dictionary-url" id="url-merriam-webster"></div>
                     <div>
                         <button class="view-btn" onclick="loadDictionary('Merriam-Webster', currentWord)" style="background: #81C784;">Iframe</button>
@@ -400,7 +440,7 @@
         <div id="tab-oed" class="tab-content">
             <div class="dictionary-view">
                 <div class="dictionary-header">
-                    <span><img src="favicons/oed.ico" class="favicon"> OED</span>
+                    <span><img src="favicons/oed.ico" class="favicon"> <span class="dict-name dict-name-oed">OED</span></span>
                     <div class="dictionary-url" id="url-oed"></div>
                     <div>
                         <button class="view-btn" onclick="loadDictionary('OED', currentWord)" style="background: #9E9A9A;">Iframe</button>
@@ -417,7 +457,7 @@
         <div id="tab-oxford-learners" class="tab-content">
             <div class="dictionary-view">
                 <div class="dictionary-header">
-                    <span><img src="favicons/oxford-learners.ico" class="favicon"> Oxford Learner's</span>
+                    <span><img src="favicons/oxford-learners.ico" class="favicon"> <span class="dict-name dict-name-oxford-learners">Oxford Learner's</span></span>
                     <div class="dictionary-url" id="url-oxford-learner-s"></div>
                     <div>
                         <button class="view-btn" onclick="loadDictionary('Oxford Learner\'s', currentWord)" style="background: #4CAF50;">Iframe</button>
