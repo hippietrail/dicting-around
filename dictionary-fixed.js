@@ -12,13 +12,13 @@ const dictionaries = [
     },
     {
         name: 'Cambridge',
-        baseUrl: 'https://dictionary.cambridge.org/dictionary/english/',
-        noQuery: true
+        baseUrl: 'https://dictionary.cambridge.org/spellcheck/english/',
+        queryParams: { q: '' }
     },
     {
         name: 'Chambers',
         baseUrl: 'https://chambers.co.uk/search/',
-        queryParams: { query: 'word', title: '21st' }
+        queryParams: { query: '', title: '21st' }
     },
     {
         name: 'Collins',
