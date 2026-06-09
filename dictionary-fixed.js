@@ -59,11 +59,9 @@ const dictionaries = [
 	},
 	{
 		name: "Oxford Learner's",
-		baseUrl: "https://www.oxfordlearnersdictionaries.com/definition/english/",
-		noQuery: true,
-		// spaces are - in the path part of the URL but + in the query part of the URL
-		// e.g. https://www.oxfordlearnersdictionaries.com/definition/english/look-up?q=look+up
-		space: "-",
+		baseUrl: "https://www.oxfordlearnersdictionaries.com/search/english/",
+		queryParams: { q: "" },
+		space: "+",
 	},
 ];
 
